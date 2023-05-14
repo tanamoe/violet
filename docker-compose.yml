@@ -14,7 +14,7 @@ services:
       database__connection__user: ${MARIADB_USER}
       database__connection__password: ${MARIADB_PASSWORD}
       database__connection__database: ${MARIADB_DATABASE}
-      url: http://localhost:8080
+      url: ${SITE_URL}
 
   db:
     image: mariadb:latest
