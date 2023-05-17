@@ -6,23 +6,23 @@ services:
     image: ghost:alpine
     restart: always
     ports:
-      - 8080:2368
+      - 80:2368
     environment:
       # see https://ghost.org/docs/config/#configuration-options
       database__client: mysql
       database__connection__host: db
-      database__connection__user: ${MARIADB_USER}
-      database__connection__password: ${MARIADB_PASSWORD}
-      database__connection__database: ${MARIADB_DATABASE}
+      database__connection__user: ${MYSQL_USER}
+      database__connection__password: ${MYSQL_PASSWORD}
+      database__connection__database: ${MYSQL_DATABASE}
       url: ${SITE_URL}
 
   db:
-    image: mariadb:latest
+    image: mysql:8
     restart: always
     volumes:
-        - "./data/mariadb:/var/lib/mysql"
+      - "./data/mysql:/var/lib/mysql"
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${MARIADB_DATABASE}
-      MARIADB_USER: ${MARIADB_USER}
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
