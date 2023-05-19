@@ -6,7 +6,7 @@ services:
     image: ghost:alpine
     restart: always
     ports:
-      - 80:2368
+      - 127.0.0.1:2368:2368
     environment:
       # see https://ghost.org/docs/config/#configuration-options
       database__client: mysql
@@ -33,3 +33,11 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  nginx:
+    image: nginx:stable
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "./data/nginx/conf.d:/etc/nginx/conf.d"
