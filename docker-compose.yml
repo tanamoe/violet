@@ -5,6 +5,8 @@ services:
   ghost:
     image: ghost:alpine
     restart: always
+    volumes:
+      - "./data/ghost:/var/lib/ghost/content"
     ports:
       - 2368:2368
     environment:
