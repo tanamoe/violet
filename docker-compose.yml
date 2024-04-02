@@ -27,7 +27,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   caddy:
     container_name: caddy
-    image: caddy:latest-alpine
+    image: caddy:alpine
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
