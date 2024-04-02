@@ -1,0 +1,3 @@
+ghost.tana.moe {
+    reverse_proxy ghost:2368    
+}

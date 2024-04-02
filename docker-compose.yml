@@ -1,8 +1,7 @@
 version: '3.9'
-
 services:
   ghost:
-    image: ghost:5.54.4-alpine
+    image: ghost:latest-alpine
     container_name: ghost
     restart: always
     volumes:
@@ -14,17 +13,7 @@ services:
       database__connection__user: ${MYSQL_USER}
       database__connection__password: ${MYSQL_PASSWORD}
       database__connection__database: ${MYSQL_DATABASE}
-      mail__transport: SMTP
-      mail__options__service: Mailgun
-      mail__options__host: smtp.eu.mailgun.org
-      mail__options__port: 465
-      mail__options__secure: true
-      mail__options__auth__user: ${MAIL_USER}
-      mail__options__auth__pass: ${MAIL_PASS}
       url: ${SITE_URL}
-    networks:
-      - default
-
   db:
     image: mysql:8.0.33-debian
     container_name: mysql
@@ -36,25 +25,17 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - default
-
-  nginx:
-    image: nginx:1.24.0-alpine
-    container_name: nginx
-    restart: always
+  caddy:
+    container_name: caddy
+    image: caddy:latest-alpine
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     volumes:
-      - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "./config/nginx/ghost.conf:/etc/nginx/conf.d/ghost.conf"
-      - "./logs:/var/log/nginx"
-      - "./ssl:/etc/ssl:ro"
-    networks:
-      - default
-
-networks:
-  default:
-    name: default-network
-    driver: bridge
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
