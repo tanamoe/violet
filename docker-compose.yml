@@ -14,6 +14,8 @@ services:
       database__connection__password: ${MYSQL_PASSWORD}
       database__connection__database: ${MYSQL_DATABASE}
       url: ${SITE_URL}
+    networks:
+      - default
   db:
     image: mysql:8.0.33-debian
     container_name: mysql
@@ -25,6 +27,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - default
   caddy:
     container_name: caddy
     image: caddy:alpine
@@ -39,7 +43,13 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - default
 volumes:
   caddy_data:
     external: true
   caddy_config:
+networks:
+  default:
+    name: default-network
+    driver: bridge
